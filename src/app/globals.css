@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.min-h-97 {
+  min-height: 30rem; /* 480 */
+}
+
+.min-h-98 {
+  min-height: 32rem; /* 512 */
+}
+
+.min-w-97 {
+  min-width: 30rem; /* 480 */
+}
