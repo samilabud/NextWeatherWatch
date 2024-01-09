@@ -1,65 +1,29 @@
-import ThermostatIcon from "@mui/icons-material/Thermostat";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import WaterIcon from "@mui/icons-material/Water";
+import CurrentWeather from "./components/current-weather";
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import CloudIcon from "@mui/icons-material/Cloud";
 
 export default function Home() {
   return (
-    <div className="flex justify-between h-full w-full min-w-97 min-h-97 flex-grow text-white">
-      <div className="flex w-4/5 p-6 min-w-80 overflow-auto">
-        <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
-          <h2 className="font-mono text-6xl bold">28°</h2>
-          <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
-            Cloudy Day
-          </h4>
-          <p className=" text-sm justify-center text-center p3 flex">
-            Today, expect a cloudy day with temperatures reaching a maximum of
-            28°.
-          </p>
-          <div className="flex justify-around overflow-auto p-3 flex-row flex-wrap">
-            {/* <div className="grid grid-cols-2 gap-4 mt-3 overflow-auto p-3 "> */}
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase">
-                <ThermostatIcon /> Feels like
+    <div className="flex h-full w-full text-white flex-wrap overflow-auto justify-between">
+      <CurrentWeather />
+      <div className="flex overflow-auto w-55p min-w-80">
+        <div className="bg-blue-500 bg-opacity-20 rounded-xl w-full p-3 h-48">
+          <span className="uppercase text-neutral-300">
+            <DateRangeIcon /> 7-day forecast
+          </span>
+          <hr className="mt-2 opacity-35" />
+          <div className="mt-3 mb-3 flex overflow-auto">
+            <div className="rounded-xl bg-slate-600 w-24 h-32 flex flex-col items-center justify-evenly">
+              <span>Today</span>
+              <span className="text-neutral-300 text-sm">16/01</span>
+              <span className="text-white text-lg">28°</span>
+              <span className="text-white text-lg">
+                <CloudIcon />
               </span>
-              <h6 className="text-3xl mt-1">30°</h6>
-              <span className="p-1"></span>
-              <p className=" text-sm text-left">
-                Humidity is making it feel warmer
-              </p>
-            </div>
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase">
-                <WaterDropIcon /> Precipitation
-              </span>
-              <h6 className="text-3xl mt-1">2.3&quot;</h6>
-              <span className="text-sm p-1">in the last 24h</span>
-              <p className="p-1 text-sm text-left">
-                2&quot; expected in the next 24h
-              </p>
-            </div>
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase">
-                <VisibilityIcon /> Visibility
-              </span>
-              <h6 className="text-3xl mt-1">6 mi</h6>
-              <span className=" text-sm p-1"></span>
-              <p className="p-1 text-sm text-left"></p>
-            </div>
-            <div className=" bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase">
-                <WaterIcon /> Humidity
-              </span>
-              <h6 className="text-3xl mt-1">82%</h6>
-              <span className=" text-sm p-1"></span>
-              <p className=" text-sm text-left">
-                The dew point is 25° right now
-              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full bg-red-700  p-2">col2</div>
     </div>
   );
 }

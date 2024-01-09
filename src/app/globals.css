@@ -37,3 +37,11 @@ body {
 .min-w-97 {
   min-width: 30rem; /* 480 */
 }
+
+.min-w-98 {
+  min-width: 60rem; /* 480 */
+}
+
+.w-55p {
+  width: 55%;
+}
