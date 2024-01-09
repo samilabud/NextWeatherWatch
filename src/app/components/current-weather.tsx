@@ -14,7 +14,6 @@ export const CurrentWeather = () => (
         Today, expect a cloudy day with temperatures reaching a maximum of 28°.
       </p>
       <div className="flex justify-around overflow-auto p-3 flex-row flex-wrap">
-        {/* <div className="grid grid-cols-2 gap-4 mt-3 overflow-auto p-3 "> */}
         <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
           <span className="uppercase text-neutral-300">
             <ThermostatIcon /> Feels like
