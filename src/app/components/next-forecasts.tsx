@@ -33,7 +33,7 @@ const NextForecast = async () => {
             <DateRangeIcon /> <span>14-day forecast</span>
           </p>
           <hr className="mt-2 opacity-35" />
-          <div className="mt-3 mb-3 flex overflow-auto flex-wrap">
+          <div className="mt-3 mb-3 flex overflow-auto flex-wrap scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
             {periods.map((val: WeatherPeriod, idx: number) => (
               <div
                 key={`period-${idx}`}
