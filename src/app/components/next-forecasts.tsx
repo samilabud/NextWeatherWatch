@@ -23,26 +23,38 @@ const isToday = (text: string) =>
 const NextForecast = () => {
   const [data, setData] = useState<Periods>();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const { location } = useContext(LocationContext);
   const periods = data?.periods;
-  const debouncedSearchTerm = useDebounce(location, 500);
+  const debouncedSearchTerm = useDebounce(location, 300);
 
   useEffect(() => {
+    setError(false);
     setLoading(true);
-    fetch(`http://localhost:8000/weather/?location=${debouncedSearchTerm}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
+    if (debouncedSearchTerm.length > 0) {
+      fetch(`http://localhost:8000/weather/?location=${debouncedSearchTerm}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+        });
+    } else {
+      setLoading(false);
+    }
   }, [debouncedSearchTerm]);
 
-  return !loading && periods ? (
+  const notDataFound = !loading && (error || (periods && periods.length <= 0));
+
+  return !loading && !notDataFound && periods ? (
     <div className="flex overflow-auto w-55p min-w-80">
       <div className="p-3 w-full h-56  bg-blue-500 bg-opacity-20 rounded-xl">
         <div className="w-full h-52 flex justify-around flex-col">
           <p className="uppercase text-neutral-300">
-            <DateRangeIcon /> <span>14-day forecast</span>
+            <DateRangeIcon />{" "}
+            <span>14-day forecast - {debouncedSearchTerm}</span>
           </p>
           <hr className="mt-2 opacity-35" />
           <div className="mt-3 mb-3 flex overflow-auto flex-wrap scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
@@ -70,6 +82,20 @@ const NextForecast = () => {
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  ) : notDataFound ? (
+    <div className="flex overflow-auto w-55p min-w-80">
+      <div className="p-3 w-full h-16  bg-red-600 bg-opacity-50 rounded-xl justify-center items-center flex">
+        <p className="text-xl">
+          {debouncedSearchTerm ? (
+            <>
+              <strong>*{debouncedSearchTerm}*</strong> not found!
+            </>
+          ) : (
+            <span>Please provide a location (city, zipcode, full address)</span>
+          )}
+        </p>
       </div>
     </div>
   ) : (
