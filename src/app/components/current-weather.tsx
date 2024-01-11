@@ -56,34 +56,17 @@ export const CurrentWeather = () => {
 
   useEffect(() => {
     setLoading(true);
-    //Authorization page: https://rapidapi.com/developer/authorization/NextWeatherWatch
-    const url = `https://open-weather13.p.rapidapi.com/city/${debouncedSearchTerm}`;
+    const url = `http://localhost:8000/current-weather/?location=${debouncedSearchTerm}`;
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "d3f46a8c3fmsh463d1f021883879p1518f5jsnd797ecfc26df",
         "SamAPI-Key": "nextweatherwatch-123456",
       },
     };
     fetch(url, options)
       .then((response) => response.json())
       .then((currentWeather) => {
-        const {
-          main: { feels_like, humidity, pressure, temp, temp_max, temp_min },
-          visibility,
-          weather,
-        } = currentWeather;
-
-        setData({
-          feels_like,
-          humidity,
-          pressure,
-          temp,
-          temp_max,
-          temp_min,
-          visibility,
-          weather,
-        });
+        setData(currentWeather);
         setLoading(false);
       });
   }, [debouncedSearchTerm]);

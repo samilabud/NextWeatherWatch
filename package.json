@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.3",
     "@mui/material-nextjs": "^5.15.3",
+    "@react-google-maps/api": "^2.19.2",
     "@uidotdev/usehooks": "^2.4.1",
     "next": "14.0.4",
     "react": "^18",

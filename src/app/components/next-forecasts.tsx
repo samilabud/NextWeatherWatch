@@ -7,6 +7,7 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
 export type WeatherPeriod = {
   name: string;
@@ -15,18 +16,36 @@ export type WeatherPeriod = {
   windDirection: string;
 };
 
-type Periods = { periods: [WeatherPeriod] };
+type ForecastResponse = {
+  latitude: string;
+  longitude: string;
+  periods: [WeatherPeriod];
+};
 
 const isToday = (text: string) =>
   ["today", "tonight"].includes(text.toLocaleLowerCase());
 
 const NextForecast = () => {
-  const [data, setData] = useState<Periods>();
+  const [data, setData] = useState<ForecastResponse>({
+    latitude: "0",
+    longitude: "0",
+    periods: [{ name: "", temperature: "", windDirection: "", windSpeed: "" }],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const { location } = useContext(LocationContext);
-  const periods = data?.periods;
+  const { latitude, longitude, periods } = data;
   const debouncedSearchTerm = useDebounce(location, 300);
+
+  const containerStyle = {
+    width: "100%",
+    height: "400px",
+  };
+
+  const center = {
+    lat: Number(latitude),
+    lng: Number(longitude),
+  };
 
   useEffect(() => {
     setError(false);
@@ -58,7 +77,7 @@ const NextForecast = () => {
   const notDataFound = !loading && (error || (periods && periods.length <= 0));
 
   return !loading && !notDataFound && periods ? (
-    <div className="flex overflow-auto w-55p min-w-80">
+    <div className="flex w-55p min-w-80 flex-wrap h-5/6 justify-evenly">
       <div className="p-3 w-full h-56  bg-blue-500 bg-opacity-20 rounded-xl">
         <div className="w-full h-52 flex justify-around flex-col">
           <p className="uppercase text-neutral-300">
@@ -91,6 +110,17 @@ const NextForecast = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className="w-full h-56 rounded-xl border-solid border-black flex">
+        <LoadScript googleMapsApiKey="AIzaSyDrCKDKddt1w8l1-43nZYQdUh0FvYk8Trk">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+          >
+            {/* Add markers, polygons, or other components here if needed */}
+          </GoogleMap>
+        </LoadScript>
       </div>
     </div>
   ) : notDataFound ? (
