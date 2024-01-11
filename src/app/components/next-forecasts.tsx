@@ -31,8 +31,17 @@ const NextForecast = () => {
   useEffect(() => {
     setError(false);
     setLoading(true);
+    const options = {
+      method: "GET",
+      headers: {
+        "SamAPI-Key": "nextweatherwatch-123456",
+      },
+    };
     if (debouncedSearchTerm.length > 0) {
-      fetch(`http://localhost:8000/weather/?location=${debouncedSearchTerm}`)
+      fetch(
+        `http://localhost:8000/weather/?location=${debouncedSearchTerm}`,
+        options
+      )
         .then((response) => response.json())
         .then((data) => {
           setData(data);

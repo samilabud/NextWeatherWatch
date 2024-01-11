@@ -56,6 +56,7 @@ export const CurrentWeather = () => {
 
   useEffect(() => {
     setLoading(true);
+    //Authorization page: https://rapidapi.com/developer/authorization/NextWeatherWatch
     const url = `https://open-weather13.p.rapidapi.com/city/${debouncedSearchTerm}`;
     const options = {
       method: "GET",
@@ -72,7 +73,7 @@ export const CurrentWeather = () => {
           visibility,
           weather,
         } = currentWeather;
-        console.log(currentWeather);
+
         setData({
           feels_like,
           humidity,
