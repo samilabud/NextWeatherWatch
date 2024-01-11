@@ -1,3 +1,4 @@
+"use client";
 import {
   useState,
   createContext,
@@ -11,15 +12,15 @@ type ProviderProps = {
 };
 
 type ContextProps = {
-  location?: string | undefined;
-  setLocation?: Dispatch<SetStateAction<string | undefined>>;
+  location: string;
+  setLocation: Dispatch<SetStateAction<string>>;
 };
 
-const defaultLocation = "Miami";
+const defaultLocation: string = "Miami";
 
-export const LocationContext = createContext({
-  location: undefined,
-  setLocation: () => undefined,
+export const LocationContext = createContext<ContextProps>({
+  location: "",
+  setLocation: () => "",
 });
 
 export const LocationProvider = ({ children }: ProviderProps) => {

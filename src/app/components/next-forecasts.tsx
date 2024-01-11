@@ -1,16 +1,13 @@
+"use client";
+import { useContext, useState, useEffect } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CloudIcon from "@mui/icons-material/Cloud";
 import WindPowerIcon from "@mui/icons-material/WindPower";
 import ExploreIcon from "@mui/icons-material/Explore";
+import { LocationContext } from "../libs/location-context";
+import { useDebounce } from "@uidotdev/usehooks";
+import LinearProgress from "@mui/material/LinearProgress";
 
-async function getData() {
-  const res = await fetch("http://localhost:8000/weather/?location=miami");
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-}
 export type WeatherPeriod = {
   name: string;
   temperature: string;
@@ -18,14 +15,29 @@ export type WeatherPeriod = {
   windDirection: string;
 };
 
+type Periods = { periods: [WeatherPeriod] };
+
 const isToday = (text: string) =>
   ["today", "tonight"].includes(text.toLocaleLowerCase());
 
-const NextForecast = async () => {
-  const data = await getData();
-  const periods = data.periods;
+const NextForecast = () => {
+  const [data, setData] = useState<Periods>();
+  const [loading, setLoading] = useState(true);
+  const { location } = useContext(LocationContext);
+  const periods = data?.periods;
+  const debouncedSearchTerm = useDebounce(location, 500);
 
-  return (
+  useEffect(() => {
+    setLoading(true);
+    fetch(`http://localhost:8000/weather/?location=${debouncedSearchTerm}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
+  }, [debouncedSearchTerm]);
+
+  return !loading && periods ? (
     <div className="flex overflow-auto w-55p min-w-80">
       <div className="p-3 w-full h-56  bg-blue-500 bg-opacity-20 rounded-xl">
         <div className="w-full h-52 flex justify-around flex-col">
@@ -56,51 +68,12 @@ const NextForecast = async () => {
                 </span>
               </div>
             ))}
-
-            {/* <div className="rounded-xl bg-slate-600 w-2/12 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2">
-              <span>Today</span>
-              <span className="text-neutral-300 text-sm">16/01</span>
-              <span className="text-white text-lg">28°</span>
-              <span className="text-white text-lg">
-                <CloudIcon />
-              </span>
-            </div>
-            <div className="rounded-xl bg-slate-600 w-2/12 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2">
-              <span>Today</span>
-              <span className="text-neutral-300 text-sm">16/01</span>
-              <span className="text-white text-lg">28°</span>
-              <span className="text-white text-lg">
-                <CloudIcon />
-              </span>
-            </div>
-            <div className="rounded-xl bg-slate-600 w-2/12 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2">
-              <span>Today</span>
-              <span className="text-neutral-300 text-sm">16/01</span>
-              <span className="text-white text-lg">28°</span>
-              <span className="text-white text-lg">
-                <CloudIcon />
-              </span>
-            </div>
-            <div className="rounded-xl bg-slate-600 w-2/12 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2">
-              <span>Today</span>
-              <span className="text-neutral-300 text-sm">16/01</span>
-              <span className="text-white text-lg">28°</span>
-              <span className="text-white text-lg">
-                <CloudIcon />
-              </span>
-            </div>
-            <div className="rounded-xl bg-slate-600 w-2/12 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2">
-              <span>Today</span>
-              <span className="text-neutral-300 text-sm">16/01</span>
-              <span className="text-white text-lg">28°</span>
-              <span className="text-white text-lg">
-                <CloudIcon />
-              </span>
-            </div> */}
           </div>
         </div>
       </div>
     </div>
+  ) : (
+    <LinearProgress className="w-55p min-w-80" />
   );
 };
 
