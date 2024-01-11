@@ -54,7 +54,7 @@ const NextForecast = () => {
         <div className="w-full h-52 flex justify-around flex-col">
           <p className="uppercase text-neutral-300">
             <DateRangeIcon />{" "}
-            <span>14-day forecast - {debouncedSearchTerm}</span>
+            <span>7-day forecast - {debouncedSearchTerm}</span>
           </p>
           <hr className="mt-2 opacity-35" />
           <div className="mt-3 mb-3 flex overflow-auto flex-wrap scrollbar scrollbar-thumb-gray-900 scrollbar-track-gray-100">
