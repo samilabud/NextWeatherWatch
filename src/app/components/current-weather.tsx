@@ -112,7 +112,7 @@ export const CurrentWeather = () => {
         <LinearProgress className="w-full" />
       ) : (
         <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
-          <h2 className="font-mono text-6xl bold">{data.temp}°</h2>
+          <h2 className="font-mono text-6xl bold">{Math.round(data.temp)}°</h2>
           <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
             {data.weather[0].main} Day
           </h4>
@@ -169,7 +169,8 @@ export const CurrentWeather = () => {
               <h6 className="text-3xl mt-1">{data.temp}°</h6>
               <span className=" text-sm p-1"></span>
               <p className=" text-sm text-left">
-                Max: {data.temp_max}° - Min: {data.temp_min}°.
+                Max: {Math.round(data.temp_max)}° - Min:{" "}
+                {Math.round(data.temp_min)}°
               </p>
             </div>
           </div>
