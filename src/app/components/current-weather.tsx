@@ -91,7 +91,22 @@ export const CurrentWeather = () => {
       ) : (
         <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
           {notDataFound || !data?.weather?.length ? (
-            <span>Not data</span>
+            <div className="flex overflow-auto w-full min-w-80 p-5">
+              <div className="p-3 w-full h-16  bg-red-600 bg-opacity-40 rounded-xl justify-center items-center flex">
+                <p className="text-xl">
+                  {debouncedSearchTerm ? (
+                    <span>
+                      Current weather for{" "}
+                      <strong>*{debouncedSearchTerm}*</strong> not found!
+                    </span>
+                  ) : (
+                    <span>
+                      Please provide a location (city, zipcode, full address)
+                    </span>
+                  )}
+                </p>
+              </div>
+            </div>
           ) : (
             <>
               <h2 className="font-mono text-6xl bold">

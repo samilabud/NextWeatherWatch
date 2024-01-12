@@ -125,7 +125,8 @@ const NextForecast = () => {
         <p className="text-xl">
           {debouncedSearchTerm ? (
             <>
-              <strong>*{debouncedSearchTerm}*</strong> not found!
+              Next 7-day forecast for <strong>*{debouncedSearchTerm}*</strong>{" "}
+              not found!
             </>
           ) : (
             <span>Please provide a location (city, zipcode, full address)</span>
