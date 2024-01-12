@@ -17,7 +17,7 @@ APIs Used: Include any APIs or data sources you're using for weather information
 Getting Started
 Follow these steps to set up the project locally:
 
-## Clone the repository: git clone https://github.com/samilabud/nextweatherwatch.git
+## Clone the repository: git clone https://github.com/samilabud/NextWeatherWatch.git
 
 Install dependencies: npm install
 Run the development server: npm run dev

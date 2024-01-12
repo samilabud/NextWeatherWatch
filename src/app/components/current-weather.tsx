@@ -45,7 +45,7 @@ export const CurrentWeather = () => {
       const options = {
         method: "GET",
         headers: {
-          "SamAPI-Key": process.env.apikey || "",
+          "SamAPI-Key": process.env.NEXT_PUBLIC_SAM_WEATHER_API_KEY || "",
         },
       };
       fetch(url, options)

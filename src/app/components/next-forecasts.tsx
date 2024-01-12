@@ -28,7 +28,7 @@ const NextForecast = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: process.env.mapskey || "",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
   });
 
   const containerStyle = {
@@ -42,7 +42,7 @@ const NextForecast = () => {
     const options = {
       method: "GET",
       headers: {
-        "SamAPI-Key": process.env.apikey || "",
+        "SamAPI-Key": process.env.NEXT_PUBLIC_SAM_WEATHER_API_KEY || "",
       },
     };
     if (debouncedSearchTerm.length > 0) {
