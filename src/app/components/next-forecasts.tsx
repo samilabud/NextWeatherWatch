@@ -47,7 +47,7 @@ const NextForecast = () => {
     };
     if (debouncedSearchTerm.length > 0) {
       fetch(
-        `http://localhost:8000/weather/?location=${debouncedSearchTerm}`,
+        `${process.env.NEXT_PUBLIC_BASE_SAM_WEATHER_API_URL}/weather/?location=${debouncedSearchTerm}`,
         options
       )
         .then((response) => response.json())

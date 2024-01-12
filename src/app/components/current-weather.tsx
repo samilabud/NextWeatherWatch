@@ -41,7 +41,7 @@ export const CurrentWeather = () => {
   useEffect(() => {
     setLoading(true);
     if (debouncedSearchTerm) {
-      const url = `http://localhost:8000/current-weather/?location=${debouncedSearchTerm}`;
+      const url = `${process.env.NEXT_PUBLIC_BASE_SAM_WEATHER_API_URL}/current-weather/?location=${debouncedSearchTerm}`;
       const options = {
         method: "GET",
         headers: {
