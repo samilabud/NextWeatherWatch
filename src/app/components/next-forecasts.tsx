@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CloudIcon from "@mui/icons-material/Cloud";
 import WindPowerIcon from "@mui/icons-material/WindPower";
@@ -7,20 +7,8 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
-
-export type WeatherPeriod = {
-  name: string;
-  temperature: string;
-  windSpeed: string;
-  windDirection: string;
-};
-
-type ForecastResponse = {
-  latitude: string;
-  longitude: string;
-  periods: [WeatherPeriod];
-};
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { WeatherPeriod, ForecastResponse } from "../libs/global-types";
 
 const isToday = (text: string) =>
   ["today", "tonight"].includes(text.toLocaleLowerCase());
@@ -38,15 +26,15 @@ const NextForecast = () => {
   const { periods } = data;
   const debouncedSearchTerm = useDebounce(location, 300);
 
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.mapskey || "",
+  });
+
   const containerStyle = {
     width: "100%",
     height: "400px",
   };
-
-  //   const center = {
-  //     lat: Number(latitude),
-  //     lng: Number(longitude),
-  //   };
 
   useEffect(() => {
     setError(false);
@@ -54,7 +42,7 @@ const NextForecast = () => {
     const options = {
       method: "GET",
       headers: {
-        "SamAPI-Key": "nextweatherwatch-123456",
+        "SamAPI-Key": process.env.apikey || "",
       },
     };
     if (debouncedSearchTerm.length > 0) {
@@ -117,19 +105,17 @@ const NextForecast = () => {
         </div>
       </div>
       <div className="w-full h-56 rounded-xl border-solid border-black flex">
-        {debouncedSearchTerm === location && (
-          <LoadScript
-            key={Date.now()}
-            googleMapsApiKey="AIzaSyDrCKDKddt1w8l1-43nZYQdUh0FvYk8Trk"
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
           >
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={10}
-            >
-              {/* Add markers, polygons, or other components here if needed */}
-            </GoogleMap>
-          </LoadScript>
+            {/* Child components, such as markers, info windows, etc. */}
+            <></>
+          </GoogleMap>
+        ) : (
+          <></>
         )}
       </div>
     </div>

@@ -2,7 +2,6 @@
 import {
   ChangeEvent,
   ChangeEventHandler,
-  ReactEventHandler,
   useContext,
   useEffect,
   useState,
@@ -15,24 +14,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
+import { type CurrentWeather as CurrentWeatherType } from "../libs/global-types";
 
-type CurrentWeather = {
-  feels_like: number;
-  humidity: number;
-  pressure: number;
-  temp: number;
-  temp_max: number;
-  temp_min: number;
-  visibility: number;
-  weather: [
-    {
-      main: string;
-      description: string;
-    }
-  ];
-};
-
-const defaultCurrentWeather: CurrentWeather = {
+const defaultCurrentWeather: CurrentWeatherType = {
   feels_like: 0,
   humidity: 0,
   pressure: 0,
@@ -50,7 +34,7 @@ const defaultCurrentWeather: CurrentWeather = {
 
 export const CurrentWeather = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CurrentWeather>(defaultCurrentWeather);
+  const [data, setData] = useState<CurrentWeatherType>(defaultCurrentWeather);
   const { location, setLocation } = useContext(LocationContext);
   const debouncedSearchTerm = useDebounce(location, 300);
 
@@ -61,7 +45,7 @@ export const CurrentWeather = () => {
       const options = {
         method: "GET",
         headers: {
-          "SamAPI-Key": "nextweatherwatch-123456",
+          "SamAPI-Key": process.env.apikey || "",
         },
       };
       fetch(url, options)
