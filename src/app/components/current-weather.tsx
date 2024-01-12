@@ -56,19 +56,23 @@ export const CurrentWeather = () => {
 
   useEffect(() => {
     setLoading(true);
-    const url = `http://localhost:8000/current-weather/?location=${debouncedSearchTerm}`;
-    const options = {
-      method: "GET",
-      headers: {
-        "SamAPI-Key": "nextweatherwatch-123456",
-      },
-    };
-    fetch(url, options)
-      .then((response) => response.json())
-      .then((currentWeather) => {
-        setData(currentWeather);
-        setLoading(false);
-      });
+    if (debouncedSearchTerm) {
+      const url = `http://localhost:8000/current-weather/?location=${debouncedSearchTerm}`;
+      const options = {
+        method: "GET",
+        headers: {
+          "SamAPI-Key": "nextweatherwatch-123456",
+        },
+      };
+      fetch(url, options)
+        .then((response) => response.json())
+        .then((currentWeather) => {
+          setData(currentWeather);
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
   }, [debouncedSearchTerm]);
 
   const handleLocationChange: ChangeEventHandler = (
@@ -77,6 +81,7 @@ export const CurrentWeather = () => {
     const locationValue = e.target.value;
     setLocation(locationValue);
   };
+  const notDataFound = (!loading && !data) || data?.weather?.length <= 0;
 
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col">
@@ -96,68 +101,75 @@ export const CurrentWeather = () => {
         <LinearProgress className="w-full" />
       ) : (
         <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
-          <h2 className="font-mono text-6xl bold">{Math.round(data.temp)}°</h2>
-          <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
-            {data.weather[0].main} Day
-          </h4>
-          <p className=" text-sm justify-center text-center p3 flex">
-            <span>
-              Today, expect a {data.weather[0].description} day with
-              temperatures reaching a maximum of {data.temp_max}°
-            </span>
-            .
-          </p>
-          <div className="flex justify-around overflow-auto p-3 flex-row flex-wrap">
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase text-neutral-300">
-                <ThermostatIcon /> Feels like
-              </span>
-              <h6 className="text-3xl mt-1">{data?.feels_like}°</h6>
-              <span className="p-1"></span>
-              <p className=" text-sm text-left">
-                {/* Humidity is making it feel warmer */}
+          {notDataFound ? (
+            <span>Not data</span>
+          ) : (
+            <>
+              <h2 className="font-mono text-6xl bold">
+                {Math.round(data.temp)}°
+              </h2>
+              <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
+                {data.weather[0].main} Day
+              </h4>
+              <p className=" text-sm justify-center text-center p3 flex">
+                <span>
+                  Today, expect a {data.weather[0].description} day with
+                  temperatures reaching a maximum of {data.temp_max}°
+                </span>
               </p>
-            </div>
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase text-neutral-300">
-                <WaterDropIcon /> Pressure
-              </span>
-              <h6 className="text-3xl mt-1">{data.pressure} mb</h6>
-              <span className="text-sm p-1">{/* in the last 24h */}</span>
-              <p className="p-1 text-sm text-left">
-                {/* 2&quot; expected in the next 24h */}
-              </p>
-            </div>
-            <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase text-neutral-300">
-                <VisibilityIcon /> Visibility
-              </span>
-              <h6 className="text-3xl mt-1">{data.visibility / 1000} mi</h6>
-              <span className=" text-sm p-1"></span>
-              <p className="p-1 text-sm text-left"></p>
-            </div>
-            <div className=" bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase text-neutral-300">
-                <WaterIcon /> Humidity
-              </span>
-              <h6 className="text-3xl mt-1">{data.humidity}%</h6>
-              <span className=" text-sm p-1"></span>
-              <p className=" text-sm text-left">
-                {/* The dew point is 25° right now */}
-              </p>
-            </div>
-            <div className=" bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
-              <span className="uppercase text-neutral-300">
-                <ThermostatIcon /> Temperature
-              </span>
-              <h6 className="text-3xl mt-1">{data.temp}°</h6>
-              <span className=" text-sm p-1"></span>
-              <p className=" text-sm text-left">
-                Max: {Math.round(data.temp_max)}° - Min:{" "}
-                {Math.round(data.temp_min)}°
-              </p>
-            </div>
-          </div>
+              <div className="flex justify-around overflow-auto p-3 flex-row flex-wrap">
+                <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
+                  <span className="uppercase text-neutral-300">
+                    <ThermostatIcon /> Feels like
+                  </span>
+                  <h6 className="text-3xl mt-1">{data?.feels_like}°</h6>
+                  <span className="p-1"></span>
+                  <p className=" text-sm text-left">
+                    {/* Humidity is making it feel warmer */}
+                  </p>
+                </div>
+                <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
+                  <span className="uppercase text-neutral-300">
+                    <WaterDropIcon /> Pressure
+                  </span>
+                  <h6 className="text-3xl mt-1">{data.pressure} mb</h6>
+                  <span className="text-sm p-1">{/* in the last 24h */}</span>
+                  <p className="p-1 text-sm text-left">
+                    {/* 2&quot; expected in the next 24h */}
+                  </p>
+                </div>
+                <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
+                  <span className="uppercase text-neutral-300">
+                    <VisibilityIcon /> Visibility
+                  </span>
+                  <h6 className="text-3xl mt-1">{data.visibility / 1000} mi</h6>
+                  <span className=" text-sm p-1"></span>
+                  <p className="p-1 text-sm text-left"></p>
+                </div>
+                <div className=" bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
+                  <span className="uppercase text-neutral-300">
+                    <WaterIcon /> Humidity
+                  </span>
+                  <h6 className="text-3xl mt-1">{data.humidity}%</h6>
+                  <span className=" text-sm p-1"></span>
+                  <p className=" text-sm text-left">
+                    {/* The dew point is 25° right now */}
+                  </p>
+                </div>
+                <div className=" bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
+                  <span className="uppercase text-neutral-300">
+                    <ThermostatIcon /> Temperature
+                  </span>
+                  <h6 className="text-3xl mt-1">{data.temp}°</h6>
+                  <span className=" text-sm p-1"></span>
+                  <p className=" text-sm text-left">
+                    Max: {Math.round(data.temp_max)}° - Min:{" "}
+                    {Math.round(data.temp_min)}°
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

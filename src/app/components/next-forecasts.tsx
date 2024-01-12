@@ -32,9 +32,10 @@ const NextForecast = () => {
     periods: [{ name: "", temperature: "", windDirection: "", windSpeed: "" }],
   });
   const [loading, setLoading] = useState(true);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState(false);
   const { location } = useContext(LocationContext);
-  const { latitude, longitude, periods } = data;
+  const { periods } = data;
   const debouncedSearchTerm = useDebounce(location, 300);
 
   const containerStyle = {
@@ -42,10 +43,10 @@ const NextForecast = () => {
     height: "400px",
   };
 
-  const center = {
-    lat: Number(latitude),
-    lng: Number(longitude),
-  };
+  //   const center = {
+  //     lat: Number(latitude),
+  //     lng: Number(longitude),
+  //   };
 
   useEffect(() => {
     setError(false);
@@ -64,6 +65,10 @@ const NextForecast = () => {
         .then((response) => response.json())
         .then((data) => {
           setData(data);
+          setCenter({
+            lat: Number(data.latitude),
+            lng: Number(data.longitude),
+          });
           setLoading(false);
         })
         .catch(() => {
@@ -112,15 +117,20 @@ const NextForecast = () => {
         </div>
       </div>
       <div className="w-full h-56 rounded-xl border-solid border-black flex">
-        <LoadScript googleMapsApiKey="AIzaSyDrCKDKddt1w8l1-43nZYQdUh0FvYk8Trk">
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
+        {debouncedSearchTerm === location && (
+          <LoadScript
+            key={Date.now()}
+            googleMapsApiKey="AIzaSyDrCKDKddt1w8l1-43nZYQdUh0FvYk8Trk"
           >
-            {/* Add markers, polygons, or other components here if needed */}
-          </GoogleMap>
-        </LoadScript>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+            >
+              {/* Add markers, polygons, or other components here if needed */}
+            </GoogleMap>
+          </LoadScript>
+        )}
       </div>
     </div>
   ) : notDataFound ? (
