@@ -70,8 +70,7 @@ export const CurrentWeather = () => {
     const locationValue = e.target.value;
     setLocation(locationValue);
   };
-  const notDataFound =
-    (!loading && !data) || data?.weather?.length <= 0 || error;
+  const notDataFound = (!loading && !data) || error;
 
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col">
@@ -91,7 +90,7 @@ export const CurrentWeather = () => {
         <LinearProgress className="w-full" />
       ) : (
         <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
-          {notDataFound ? (
+          {notDataFound || !data?.weather?.length ? (
             <span>Not data</span>
           ) : (
             <>
