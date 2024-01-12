@@ -37,8 +37,10 @@ export const CurrentWeather = () => {
   const [data, setData] = useState<CurrentWeatherType>(defaultCurrentWeather);
   const { location, setLocation } = useContext(LocationContext);
   const debouncedSearchTerm = useDebounce(location, 300);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    setError(false);
     setLoading(true);
     if (debouncedSearchTerm) {
       const url = `${process.env.NEXT_PUBLIC_BASE_SAM_WEATHER_API_URL}/current-weather/?location=${debouncedSearchTerm}`;
@@ -53,6 +55,9 @@ export const CurrentWeather = () => {
         .then((currentWeather) => {
           setData(currentWeather);
           setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
         });
     } else {
       setLoading(false);
@@ -65,7 +70,8 @@ export const CurrentWeather = () => {
     const locationValue = e.target.value;
     setLocation(locationValue);
   };
-  const notDataFound = (!loading && !data) || data?.weather?.length <= 0;
+  const notDataFound =
+    (!loading && !data) || data?.weather?.length <= 0 || error;
 
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col">
