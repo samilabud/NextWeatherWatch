@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/img/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.weather.gov",
+        port: "",
+        pathname: "/icons/**",
+      },
     ],
   },
 };

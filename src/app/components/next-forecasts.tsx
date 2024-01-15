@@ -1,12 +1,12 @@
 "use client";
 import { useContext, useState, useEffect, useCallback } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-import CloudIcon from "@mui/icons-material/Cloud";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { WeatherPeriod, ForecastResponse } from "../libs/global-types";
+import Image from "next/image";
 
 const isToday = (text: string) =>
   ["today", "tonight"].includes(text.toLocaleLowerCase());
@@ -15,7 +15,16 @@ const NextForecast = () => {
   const [data, setData] = useState<ForecastResponse>({
     latitude: "0",
     longitude: "0",
-    periods: [{ name: "", temperature: "", windDirection: "", windSpeed: "" }],
+    periods: [
+      {
+        name: "",
+        temperature: "",
+        windDirection: "",
+        windSpeed: "",
+        icon: "",
+        shortDescription: "",
+      },
+    ],
   });
   const [loading, setLoading] = useState(true);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
@@ -68,9 +77,9 @@ const NextForecast = () => {
   const notDataFound = !loading && (error || (periods && periods.length <= 0));
 
   return !loading && !notDataFound && periods ? (
-    <div className="flex w-55p min-w-80 flex-wrap h-5/6 justify-evenly">
-      <div className="p-3 w-full h-56  bg-blue-500 bg-opacity-20 rounded-xl">
-        <div className="w-full h-52 flex justify-around flex-col">
+    <div className="flex w-55p min-w-80 flex-wrap h-5/6 justify-around">
+      <div className="p-3 h-80  bg-blue-500 bg-opacity-20 rounded-xl mx-6 sm:mx-1 mt-6 sm:mt-0">
+        <div className="w-full h-72 flex justify-around flex-col">
           <p className="uppercase text-neutral-300">
             <DateRangeIcon />{" "}
             <span>7-day forecast - {debouncedSearchTerm}</span>
@@ -84,7 +93,7 @@ const NextForecast = () => {
                   isToday(val.name)
                     ? "bg-slate-600 bg-opacity-60"
                     : "bg-slate-600 bg-opacity-30"
-                } min-w-20 h-36 max-w-24 flex flex-col items-center justify-around mr-2 ml-2 mb-2`}
+                } w-28 h-56 flex flex-col items-center justify-around mr-2 ml-2 mb-2`}
               >
                 <span className="text-center">{val.name}</span>
                 <span className="text-neutral-300 text-sm">
@@ -94,15 +103,21 @@ const NextForecast = () => {
                   {val.windSpeed}
                 </span>
                 <span className="text-white text-lg">{val.temperature}°</span>
-                <span className="text-white text-lg">
-                  <CloudIcon />
+                <span className="text-white text-lg pb-3">
+                  <Image
+                    src={val.icon}
+                    alt={val.shortDescription}
+                    width={30}
+                    height={30}
+                    className="mt-3 rounded-sm"
+                  />
                 </span>
               </div>
             ))}
           </div>
         </div>
       </div>
-      <div className="w-full h-56 rounded-xl border-solid border-black flex">
+      <div className="w-full h-60 rounded-xl border-solid border-black flex mx-6 sm:mx-1 mt-6 sm:mt-0">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={containerStyle}
@@ -118,7 +133,7 @@ const NextForecast = () => {
       </div>
     </div>
   ) : notDataFound ? (
-    <div className="flex overflow-auto w-55p min-w-80">
+    <div className="flex overflow-auto w-55p min-w-72">
       <div className="p-3 w-full h-16  bg-red-600 bg-opacity-50 rounded-xl justify-center items-center flex">
         <p className="text-xl">
           {debouncedSearchTerm ? (

@@ -75,7 +75,7 @@ export const CurrentWeather = () => {
   const notDataFound = (!loading && !data) || error;
 
   return (
-    <div className="flex min-w-80 overflow-auto w-5/12 flex-col">
+    <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
       <div className="w-full mb-3 block relative text-white">
         <LocationOnIcon className="pointer-events-none absolute top-1/2 transform -translate-y-1/2 left-3" />
         <input
@@ -91,7 +91,7 @@ export const CurrentWeather = () => {
       {loading ? (
         <LinearProgress className="w-full" />
       ) : (
-        <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24 min-w-80">
+        <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24">
           {notDataFound || !data?.weather?.length ? (
             <div className="flex overflow-auto w-full min-w-80 p-5">
               <div className="p-3 w-full h-16  bg-red-600 bg-opacity-40 rounded-xl justify-center items-center flex">
