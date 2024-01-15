@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-default-background bg-cover bg-no-repeat">
+      <body className="bg-default-background bg-origin-content bg-center bg-sky-300 bg-no-repeat">
         <main className="flex flex-col items-center justify-between p-24 h-svh w-svw">
           <div className="h-full w-full mt-1 bg-slate-800 bg-opacity-90 min-w-80 flex min-h-98 rounded-xl p-3">
             <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
