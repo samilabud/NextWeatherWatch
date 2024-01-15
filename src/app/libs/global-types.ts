@@ -10,6 +10,7 @@ export type CurrentWeather = {
     {
       main: string;
       description: string;
+      icon: string;
     }
   ];
 };

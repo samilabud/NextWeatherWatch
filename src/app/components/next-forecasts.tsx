@@ -2,8 +2,6 @@
 import { useContext, useState, useEffect, useCallback } from "react";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import CloudIcon from "@mui/icons-material/Cloud";
-import WindPowerIcon from "@mui/icons-material/WindPower";
-import ExploreIcon from "@mui/icons-material/Explore";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";

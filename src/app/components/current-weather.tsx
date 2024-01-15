@@ -15,6 +15,7 @@ import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
 import { type CurrentWeather as CurrentWeatherType } from "../libs/global-types";
+import Image from "next/image";
 
 const defaultCurrentWeather: CurrentWeatherType = {
   feels_like: 0,
@@ -28,6 +29,7 @@ const defaultCurrentWeather: CurrentWeatherType = {
     {
       main: "",
       description: "",
+      icon: "",
     },
   ],
 };
@@ -112,9 +114,18 @@ export const CurrentWeather = () => {
               <h2 className="font-mono text-6xl bold">
                 {Math.round(data.temp)}°
               </h2>
-              <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
-                {data.weather[0].main} Day
-              </h4>
+              <div className="flex flex-nowrap justify-around">
+                <h4 className="font-mono text-3xl  mt-1 whitespace-nowrap p-3">
+                  {data.weather[0].main} Day
+                </h4>
+                <Image
+                  src={`https://openweathermap.org/img/wn/${data.weather[0].icon}.png`}
+                  alt={data.weather[0].description}
+                  width={50}
+                  height={50}
+                  className="mt-3"
+                />
+              </div>
               <p className=" text-sm justify-center text-center p3 flex">
                 <span>
                   Today, expect a {data.weather[0].description} day with
