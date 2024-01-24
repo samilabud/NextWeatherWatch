@@ -45,3 +45,7 @@ body {
 .w-55p {
   width: 55%;
 }
+
+.min-w-56p {
+  min-width: 17rem;
+}

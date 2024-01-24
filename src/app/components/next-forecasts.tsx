@@ -133,9 +133,9 @@ const NextForecast = () => {
       </div>
     </div>
   ) : notDataFound ? (
-    <div className="flex overflow-auto w-55p min-w-72">
+    <div className="flex overflow-auto sm:min-w-72 w-55p min-w-56p">
       <div className="p-3 w-full h-16  bg-red-600 bg-opacity-50 rounded-xl justify-center items-center flex">
-        <p className="text-xl">
+        <p className="text-lg sm:text-xl">
           {debouncedSearchTerm ? (
             <>
               Next 7-day forecast for <strong>*{debouncedSearchTerm}*</strong>{" "}
