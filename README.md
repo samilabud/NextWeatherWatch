@@ -4,6 +4,10 @@
 
 NextWeatherWatch is a sleek and responsive weather application built with Next.js and styled with Tailwind CSS. It provides real-time weather information for any location worldwide, offering a clean and intuitive user interface.
 
+## Demo
+
+https://nextweatherwatch.netlify.app/
+
 ## Features
 
 Real-time Weather Data: Utilize the power of Next.js to fetch and display up-to-date weather information from reliable APIs.
