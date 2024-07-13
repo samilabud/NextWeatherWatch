@@ -14,6 +14,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { LocationContext } from "../libs/location-context";
 import { useDebounce } from "@uidotdev/usehooks";
 import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import { type CurrentWeather as CurrentWeatherType } from "../libs/global-types";
 import Image from "next/image";
 
@@ -40,6 +41,18 @@ export const CurrentWeather = () => {
   const { location, setLocation } = useContext(LocationContext);
   const debouncedSearchTerm = useDebounce(location, 300);
   const [error, setError] = useState(false);
+  const [isUserFirstTime, setIsUserFirstTime] = useState(true);
+
+  useEffect(() => {
+    if (!loading) return;
+    const isFirstTime = localStorage.getItem("isFirstTime");
+    if (!isFirstTime) {
+      setIsUserFirstTime(true);
+      localStorage.setItem("isFirstTime", "false");
+    } else {
+      setIsUserFirstTime(false);
+    }
+  }, []);
 
   useEffect(() => {
     setError(false);
@@ -74,6 +87,31 @@ export const CurrentWeather = () => {
   };
   const notDataFound = (!loading && !data) || error;
 
+  // Function to increase a value over time using setInterval
+  const useIncrementValueOverTime = (
+    initialValue: number,
+    incrementAmount: number,
+    intervalEndsAt: number
+  ) => {
+    const [value, setValue] = useState(initialValue);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setValue((prevValue) => prevValue + incrementAmount);
+      }, 1000);
+      if (value >= intervalEndsAt) {
+        clearInterval(interval);
+      }
+
+      // Cleanup on component unmount
+      return () => clearInterval(interval);
+    }, [incrementAmount, intervalEndsAt, value]);
+
+    return value;
+  };
+
+  const mockIncreaser = useIncrementValueOverTime(0, 10, 100);
+
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
       <div className="w-full mb-3 block relative text-white">
@@ -89,7 +127,19 @@ export const CurrentWeather = () => {
         />
       </div>
       {loading ? (
-        <LinearProgress className="w-full" />
+        <div className="flex items-center justify-center h-full">
+          {isUserFirstTime ? (
+            <CircularProgress
+              variant="determinate"
+              value={mockIncreaser}
+              size={200}
+              thickness={4}
+              className="text-white self-center place-self-center justify-self-center"
+            />
+          ) : (
+            <LinearProgress className="w-full" />
+          )}
+        </div>
       ) : (
         <div className="w-full flex items-center h-full flex-col rounded-xl bg-opacity-30 bg-black pt-24">
           {notDataFound || !data?.weather?.length ? (
