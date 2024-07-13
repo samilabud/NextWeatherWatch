@@ -52,7 +52,7 @@ export const CurrentWeather = () => {
     } else {
       setIsUserFirstTime(false);
     }
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     setError(false);
@@ -110,7 +110,7 @@ export const CurrentWeather = () => {
     return value;
   };
 
-  const mockIncreaser = useIncrementValueOverTime(0, 10, 100);
+  const mockIncreaser = useIncrementValueOverTime(1, 2, 100);
 
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
