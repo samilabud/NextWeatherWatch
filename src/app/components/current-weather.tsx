@@ -110,8 +110,13 @@ export const CurrentWeather = () => {
     return value;
   };
 
-  const mockIncreaser = useIncrementValueOverTime(1, 2, 100);
-
+  const maxIncreaser = 100;
+  const mockIncreaser = useIncrementValueOverTime(0, 2, maxIncreaser);
+  console.log({
+    "mockIncreaser >= maxIncreaser": mockIncreaser >= maxIncreaser,
+    mockIncreaser,
+    maxIncreaser,
+  });
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
       <div className="w-full mb-3 block relative text-white">
@@ -128,7 +133,7 @@ export const CurrentWeather = () => {
       </div>
       {loading ? (
         <div className="flex items-center justify-center h-full">
-          {isUserFirstTime ? (
+          {isUserFirstTime && mockIncreaser !== maxIncreaser ? (
             <CircularProgress
               variant="determinate"
               value={mockIncreaser}
