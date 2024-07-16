@@ -112,11 +112,6 @@ export const CurrentWeather = () => {
 
   const maxIncreaser = 100;
   const mockIncreaser = useIncrementValueOverTime(0, 2, maxIncreaser);
-  console.log({
-    "mockIncreaser >= maxIncreaser": mockIncreaser >= maxIncreaser,
-    mockIncreaser,
-    maxIncreaser,
-  });
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
       <div className="w-full mb-3 block relative text-white">
