@@ -17,6 +17,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import CircularProgress from "@mui/material/CircularProgress";
 import { type CurrentWeather as CurrentWeatherType } from "../libs/global-types";
 import Image from "next/image";
+import { useIncrementValueOverTime } from "../hooks/useIncrementValueOverTime";
 
 const defaultCurrentWeather: CurrentWeatherType = {
   feels_like: 0,
@@ -87,31 +88,9 @@ export const CurrentWeather = () => {
   };
   const notDataFound = (!loading && !data) || error;
 
-  // Function to increase a value over time using setInterval
-  const useIncrementValueOverTime = (
-    initialValue: number,
-    incrementAmount: number,
-    intervalEndsAt: number
-  ) => {
-    const [value, setValue] = useState(initialValue);
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setValue((prevValue) => prevValue + incrementAmount);
-      }, 1000);
-      if (value >= intervalEndsAt) {
-        clearInterval(interval);
-      }
-
-      // Cleanup on component unmount
-      return () => clearInterval(interval);
-    }, [incrementAmount, intervalEndsAt, value]);
-
-    return value;
-  };
-
   const maxIncreaser = 100;
   const mockIncreaser = useIncrementValueOverTime(0, 2, maxIncreaser);
+
   return (
     <div className="flex min-w-80 overflow-auto w-5/12 flex-col px-6 sm:px-1">
       <div className="w-full mb-3 block relative text-white">
