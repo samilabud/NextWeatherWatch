@@ -36,6 +36,17 @@ const defaultCurrentWeather: CurrentWeatherType = {
   ],
 };
 
+/**
+ * CurrentWeather component
+ *
+ * @remarks
+ * This component fetches current weather data from the SAM Weather API
+ * and displays it on the page.
+ *
+ * @param location - the location for which the weather data should be fetched
+ *
+ * @returns a JSX element containing the current weather data
+ */
 export const CurrentWeather = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<CurrentWeatherType>(defaultCurrentWeather);
@@ -45,6 +56,7 @@ export const CurrentWeather = () => {
   const [isUserFirstTime, setIsUserFirstTime] = useState(true);
 
   useEffect(() => {
+    // Only run this effect if we are loading for the first time
     if (!loading) return;
     const isFirstTime = localStorage.getItem("isFirstTime");
     if (!isFirstTime) {
@@ -155,12 +167,18 @@ export const CurrentWeather = () => {
                   className="mt-3"
                 />
               </div>
-              <p className=" text-sm justify-center text-center p3 flex">
+              <div className="text-sm justify-center text-center w-5/6">
                 <span>
-                  Today, expect a {data.weather[0].description} day with
-                  temperatures reaching a maximum of {data.temp_max}°
+                  Today, expect a &nbsp;
+                  <span className="text-slate-300 font-bold">
+                    {data.weather[0].description}
+                  </span>
+                  &nbsp; day with temperatures reaching a maximum of &nbsp;
+                  <span className="text-slate-300 font-bold">
+                    {data.temp_max}°
+                  </span>
                 </span>
-              </p>
+              </div>
               <div className="flex justify-around overflow-auto p-3 flex-row flex-wrap">
                 <div className="bg-blue-500 bg-opacity-20 rounded-xl p-3 w-44 h-46 mt-4 mr-4">
                   <span className="uppercase text-neutral-300">
